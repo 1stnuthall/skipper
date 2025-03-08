@@ -1,0 +1,52 @@
+{
+  "display_information": {
+    "name": "Skipper",
+    "description": "Scout Administrator",
+    "background_color": "#005eb8",
+    "long_description": "*Skipper*\rSkipper can help you stay on top of your Scout Admin and Communication by:\r* Performing regular tasks on OSM\r* Keeping documentation available\r* Being useful"
+  },
+  "features": {
+    "app_home": {
+      "home_tab_enabled": true,
+      "messages_tab_enabled": true,
+      "messages_tab_read_only_enabled": false
+    },
+    "bot_user": {
+      "display_name": "Skipper",
+      "always_online": true
+    }
+  },
+  "oauth_config": {
+    "redirect_urls": [
+      "https://example.com/slack/events"
+    ],
+    "scopes": {
+      "bot": [
+        "channels:read",
+        "chat:write",
+        "commands",
+        "im:write",
+        "incoming-webhook",
+        "reactions:write",
+        "users:read",
+        "users:read.email",
+        "users.profile:read"
+      ]
+    }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "request_url": "https://example.com/slack/events",
+      "bot_events": [
+        app_home_opened
+      ]
+    },
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://example.com/slack/events"
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
+}
