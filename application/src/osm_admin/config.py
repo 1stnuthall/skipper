@@ -1,4 +1,5 @@
 import os
+from resources import *
 
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, Fill
 
@@ -32,3 +33,4 @@ BEAVERS_REQUIRED_KNOTS = 3
 
 XL_HEADER = Font(bold=True)
 XL_SLANTED = Alignment(text_rotation=45)
+

@@ -5,6 +5,7 @@ from utils import *
 from utils import action_subscription, action_service_connection, action_visit_release
 from views import home, blocks, request, modal
 from views import request
+from resources import *
 
 logging.basicConfig(level=logging.WARNING)
 

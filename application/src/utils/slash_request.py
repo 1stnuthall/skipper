@@ -1,7 +1,7 @@
 from config import *
 
 from utils import formOpen
-from osm_admin import OPS_REQUESTS
+from resources import OPS_REQUESTS
 
 from .slash_usage import slashUsage
 

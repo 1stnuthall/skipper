@@ -1,6 +1,6 @@
 from config import *
 
-from osm_admin import GROUPS, OPS_REQUESTS
+from resources import GROUPS, OPS_REQUESTS
 
 ###########################################################
 ## Simple function to create a "Usage" message to a user

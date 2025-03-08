@@ -1,5 +1,5 @@
 from config import *
-from osm_admin import OPS_REQUESTS
+from resources import OPS_REQUESTS
 
 from . import validateInput
 from . import apiRequest

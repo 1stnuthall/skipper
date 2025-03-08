@@ -5,6 +5,8 @@ from .send_message import sendMessage
 from .approval_get_id import getInterventionId
 from .validate_input import validateInput
 
+from resources import *
+
 from .slash_oncall import *
 from .slash_request import *
 from .slash_usage import *

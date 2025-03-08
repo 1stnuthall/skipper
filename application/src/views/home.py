@@ -1,5 +1,5 @@
 from config import *
-from osm_admin import OPS_REQUESTS, GROUPS
+from resources import OPS_REQUESTS, GROUPS
 
 ###########################################################
 ### Home Screen for the App
