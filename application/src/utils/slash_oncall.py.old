@@ -1,0 +1,19 @@
+from config import *
+from osm_admin import generate_spreadsheet
+
+###########################################################
+### Handle the /oncall Command
+# A user can type "/oncall" anywhere in Slack to find out
+# who is on call 
+# Using "/oncall" with a date will respond with who will be
+# on call on a specific date
+###########################################################
+@app.command("/csb")
+def handle_command(body, ack, respond, client, logger):
+### Handle the /oncall [Date] shortcut
+
+    generate_spreadsheet()
+    ack(
+        # Send the output to the user
+        "{} is on call {}".format(engineer, date_output)
+    )

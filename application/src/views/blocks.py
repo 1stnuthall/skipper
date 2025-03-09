@@ -4,10 +4,10 @@ from slack_sdk.models.blocks import *
 ###########################################################
 ## Block Types
 ###########################################################
-BLK_PROJECT_NAME = InputBlock(
-    block_id = "project_name",
-    label = TextObject(type="plain_text", text="Project Name"),
-    element = PlainTextInputElement(action_id="project_name", placeholder="my-project")
+BLK_SECTION = InputBlock(
+    block_id = "section",
+    label = TextObject(type="plain_text", text="Section"),
+    element = PlainTextInputElement(action_id="section", placeholder="beavers")
 )
 
 BLK_PROJECT_SHORT_NAME = InputBlock(
@@ -34,16 +34,16 @@ BLK_COST_CODE = InputBlock(
     element = PlainTextInputElement(action_id="cost_code", placeholder="P012345")
 )
 
-BLK_LOCATIONS = InputBlock(
-    block_id = "locations",
-    label = "Locations",
+BLK_BADGE_TYPE = InputBlock(
+    block_id = "badge_type",
+    label = "Badge Type",
     element = StaticSelectElement(
-       action_id = "locations",
-       placeholder = "Select a Location",
+       action_id = "badge_type",
+       placeholder = "challenge",
        options = [
-          Option(label = "UKSouth", value = "uksouth"),
-          Option(label = "UKwest",  value = "ukwest"),
-          Option(label = "All",     value = "uksouth,ukwest")
+          Option(label = "Challenge", value = "challenge"),
+          Option(label = "Activity",  value = "activity"),
+          Option(label = "Staged",    value = "staged")
        ]
     )
 )
