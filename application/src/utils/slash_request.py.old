@@ -12,7 +12,7 @@ from .slash_usage import slashUsage
 # if the keyword is not submitted, the user will get a "usage" message.
 # Otherwise, the relevant modal view is presented
 ###########################################################
-@app.command("/request")
+@app.command("/osm")
 def handle_command(body, ack, respond, client, logger):
 ### Handle the /request [Request Type] shortcut
 

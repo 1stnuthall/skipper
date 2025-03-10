@@ -31,7 +31,7 @@ def update_home_tab(client, event, logger):
                     tmp_group_block.append(
                         SectionBlock(
                             text=MarkdownTextObject(text=OPS_REQUESTS[request_name]["title_home"]),
-                            accessory=ButtonElement(text=PlainTextObject(text="Request"), action_id="req_start", value=request_name)               
+                            accessory=ButtonElement(text=PlainTextObject(text="Request"), action_id=OPS_REQUESTS[request_name]["action_id"], value=request_name)               
                         )
                     )
             if len(tmp_group_block) > 1:

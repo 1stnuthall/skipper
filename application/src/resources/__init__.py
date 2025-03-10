@@ -1,5 +1,5 @@
 from .hello_world import req_hello_world
-from .generate_badge_spreadsheet import req_badge_spreadsheet
+#from .generate_badge_spreadsheet import req_badge_spreadsheet
 
 
 ###################################################################
@@ -7,7 +7,7 @@ from .generate_badge_spreadsheet import req_badge_spreadsheet
 ###################################################################
 OPS_REQUESTS = dict(
     req_hello_world = req_hello_world,
-    req_badge_spreadsheet = req_badge_spreadsheet,
+    #req_badge_spreadsheet = req_badge_spreadsheet,
     # req_kv_restore = req_kv_restore,
     # req_azdo_project = req_azdo_project,
     # req_resource_group = req_resource_group,

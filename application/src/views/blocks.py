@@ -4,10 +4,19 @@ from slack_sdk.models.blocks import *
 ###########################################################
 ## Block Types
 ###########################################################
+
 BLK_SECTION = InputBlock(
     block_id = "section",
-    label = TextObject(type="plain_text", text="Section"),
-    element = PlainTextInputElement(action_id="section", placeholder="beavers")
+    label = "Section",
+    element = StaticSelectElement(
+       action_id = "section",
+       placeholder = "Select section",
+       options = [
+          Option(label = "Beavers", value = "beavers"),
+          Option(label = "Cubs",    value = "cubs"),
+          Option(label = "Scouts",  value = "scouts")
+       ]
+    )
 )
 
 BLK_PROJECT_SHORT_NAME = InputBlock(

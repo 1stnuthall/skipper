@@ -7,10 +7,9 @@ from . import apiRequest
 ###########################################################
 ### Validate and Submit Request
 ###########################################################
-@app.view("Waas")
+@app.view("view-id")
 ## Handle the response from the relevant modal view form completed by the user
 def view_submission(ack, body, logger):
-
     user = body["user"]["id"]
     user_profile = app.client.users_profile_get(user=user)
     request_type = body["view"]["private_metadata"]
@@ -66,7 +65,7 @@ def view_submission(ack, body, logger):
     print("REQUEST OBJECT:\n",request_object)
 
     if len(errors) > 0:
-        ## If there were errors, notify the user
+        # If there were errors, notify the user
         ack (
             response_action = "errors",
             errors = errors

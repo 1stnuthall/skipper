@@ -84,7 +84,7 @@ OPSGENIE_HEADER = {
 COMMAND_TITLE = "Scouts Admin"  
 COMMAND_INFO  = "Let me help you with something."  
 COMMAND_USAGE = """
-*Usage:* `/request [Request Type]`
+*Usage:* `/osm [Request Type]`
 
 *Request Types:*
 """

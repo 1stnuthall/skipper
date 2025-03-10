@@ -4,7 +4,7 @@ from datetime import datetime
 import pickle
 
 from .config import *
-from . import headers
+from .login import headers
 from utils import get_cache, write_cache
 
 class OSM:
