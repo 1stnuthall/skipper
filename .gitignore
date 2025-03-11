@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+__osm__*
+**.xlsx
+
+**/.DS_Store

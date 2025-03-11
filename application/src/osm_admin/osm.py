@@ -16,13 +16,13 @@ class OSM:
                 section_id = role['sectionid']
                 section_group = role['groupname'].replace(section_name.title(), '').strip()
 
-        # Get basic Section Details
+        # # Get basic Section Details
         self.name = section_name
         self.id = section_id
         self.group = section_group
         self.current_term = self.get_current_term()
         
-        # Get Scout Details
+        # # Get Scout Details
         self.scouts = dict()
         self.size = 0
         for scout in self.get_scouts():
@@ -39,7 +39,14 @@ class OSM:
                     "full_name": scout['full_name']
                 }})
 
-        # Get Badge Details
+        # self.patrols = dict()
+        # for patrol in self.get_patrols():
+        #     self.patrols.update({patrol['name']: {
+        #         "name": patrol['name'],
+        #         "points": patrol['points']
+        #     }})
+
+        # # Get Badge Details
         self.badges = dict()
         for badge_type in range(1,4):
             self.badges.update({BADGE_TYPE[badge_type]: {}})
@@ -62,7 +69,7 @@ class OSM:
                     })
             
 
-        # Get Badge Completion Details
+        # # Get Badge Completion Details
         for badges in self.get_badge_records_by_member()['data']:
             self.scouts[str(badges['scoutid'])].update({'badges':badges['badges']})
 
@@ -125,6 +132,11 @@ class OSM:
         url = f'{OSM_BASE_URL}/ext/members/contact/?action=getListOfMembers&sort=lastname&sectionid={self.id}&termid={self.current_term}&section={self.name}'
         return self.get(url = url, scope = 'member', cachefile = f'{self.id}_members')['items']
 
+    def get_patrols(self):
+        url = f'{OSM_BASE_URL}/ext/members/patrols?action=getPatrolsWithPeople&sectionid={self.id}&termid={self.current_term}&include_no_patrol=y'
+        patrols = self.get(url = url, scope = 'member', cachefile = f'{self.id}_patrols')['items']
+        return self.get(url = url, scope = 'member', cachefile = f'{self.id}_patrols')['items']
+    
     def get_terms(self):
         url = f'{OSM_BASE_URL}/api.php?action=getTerms&section_id={self.id}&section={self.name}'
         return self.get(url = url, scope = 'programme', cachefile = f'{self.id}_terms')
@@ -243,10 +255,7 @@ class OSM:
         url = f'{OSM_BASE_URL}/ext/badges/records/?action=getBadgeRecords&term_id={self.current_term}&section={self.name}&badge_id={badge_id}&section_id={self.id}&badge_version={badge_version}'
         return self.get(url = url, scope = 'badge', cachefile = f'{self.id}_{badge_id}')
     
-    def get_badge_record_by_identifier(self, badge_identifier, badge_name):
-        badge_id = badge_identifier.split('_')[0]
-        badge_version = badge_identifier.split('_')[1]
-
+    def get_badge_record_by_identifier(self, badge_id, badge_version, badge_name):
         url = f'{OSM_BASE_URL}/ext/badges/records/?action=getBadgeRecords&term_id={self.current_term}&section={self.name}&badge_id={badge_id}&section_id={self.id}&badge_version={badge_version}'
         return self.get(url = url, scope = 'badge', cachefile = f'{self.id}_{badge_name}')
 
@@ -272,3 +281,4 @@ class OSM:
     def update_badge_record(self, data):
         return self.post(url = BADGE_URL, scope = 'badge', data = data, cachefile = f'{self.id}_badge_record')
 
+    

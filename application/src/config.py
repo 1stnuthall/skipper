@@ -9,7 +9,7 @@ from datetime import date
 from dotenv import load_dotenv
 
 from slack_sdk.models.blocks import *
-from slack_bolt import App, Say
+from slack_bolt import *
 from slack_sdk.models.views import View
 
 

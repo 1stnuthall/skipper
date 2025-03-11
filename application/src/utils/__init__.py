@@ -4,8 +4,6 @@ from .send_message import sendMessage
 from .validate_input import validateInput
 # from .validate_request import view_submission
 
-from resources import *
-
 # from .slash_request import *
 # from .slash_usage import *
 

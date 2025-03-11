@@ -1,8 +1,6 @@
 from .blocks import *
 from config import app, logging
 
-logging.basicConfig(level=logging.DEBUG)
-
 ###########################################################
 ## Middleware Declaration - it's there because it's there
 ###########################################################

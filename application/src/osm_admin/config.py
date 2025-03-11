@@ -1,9 +1,8 @@
 import os
-from resources import *
+#from resources import *
 from utils import formOpen
 
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, Fill
-
 
 OSM_API_ID     = os.environ.get("OSM_API_ID")
 OSM_API_SECRET = os.environ.get("OSM_API_SECRET")
@@ -35,3 +34,7 @@ BEAVERS_REQUIRED_KNOTS = 3
 XL_HEADER = Font(bold=True)
 XL_SLANTED = Alignment(text_rotation=45)
 
+###################################################################
+# Create Ops Requests object
+###################################################################
+OPS_REQUESTS = dict()

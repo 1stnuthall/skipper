@@ -3,7 +3,7 @@ from datetime import date
 from openpyxl import Workbook
 from string import ascii_uppercase as col
 
-
+from utils import sendMessage
 from views import *
 from config import *
 
@@ -11,7 +11,7 @@ from config import *
 from .config import *
 from .osm import OSM
 
-def generate_spreadsheet(badge_type, section):
+def generate_spreadsheet(badge_type, section, user):
     print(f"Generating {badge_type.title()} Badge Records for {section.name.title()}...")
     xl = Workbook()
     filename = f"{section.group} {section.name.title()} - {badge_type.title()} ({date.today()}).xlsx"
@@ -31,7 +31,7 @@ def generate_spreadsheet(badge_type, section):
             if 'badges' in scout:
                 xlrow += 1
                 sheet[f"{col[xlcol]}{xlrow}"] = f"{scout['full_name']}"
-        badge_id = value['identifier']
+        badge_id = "{0}_{1}".format(value['id'], value['version'])
         
         for row in badge_structure[badge_id][1]['rows']:
             xlcol += 1
@@ -50,6 +50,20 @@ def generate_spreadsheet(badge_type, section):
         
     print(f"Creating {filename} file")
     xl.save(f"{filename}")
+    # The name of the file you're going to upload
+    file_name = filename
+    # ID of channel that you want to upload file to
+
+    # Call the files.upload method using the WebClient
+    # Uploading files requires the `files:write` scope
+    result = app.client.files_upload_v2(
+        channel="C08C5B8QJE9",
+        initial_comment=f"Here is the latest {badge_type} badge completion status spreadsheet.",
+        file=filename,
+    )
+    # Log the result
+    logging.info(result)
+
 
 ###########################################################
 # Generate a spreadsheet showing badge completion for a section
@@ -58,7 +72,7 @@ req_badge_spreadsheet = dict(
     group = "Bages",
     title_popup = "Generate Spreadsheet",
     title_home = "Generate Badge Spreadsheet",
-    action_id = "generate-badge-spreadsheet",
+    action_id = "req_badge_spreadsheet",
     command = "badge status",
     approval_needed = "false",
     enabled = "true",
@@ -67,9 +81,10 @@ req_badge_spreadsheet = dict(
         BLK_BADGE_TYPE
     ]
 )
-OPS_REQUESTS.update({"req_badge_spreadsheet": req_badge_spreadsheet})
 
-@app.action("generate-badge-spreadsheet")
+OPS_REQUESTS.update(req_badge_spreadsheet=req_badge_spreadsheet)
+
+@app.action("req_badge_spreadsheet")
 ## Display the popup form
 def display_request_form(ack, body, client, logger):
     ack()
@@ -82,13 +97,15 @@ def display_request_form(ack, body, client, logger):
         trigger_id = body["trigger_id"],
         view_id = "home",
         req_id = body["actions"][0]["value"],
-        callback_id = "generate-badge-spreadsheet",
+        callback_id = "req_badge_spreadsheet",
     )
 
-@app.view("generate-badge-spreadsheet")
+@app.view("req_badge_spreadsheet")
 ## Handle the response from the relevant modal view form completed by the user
-def view_submission(ack, body, logger):
+def view_submission(ack, say, body, logger):
     section = OSM(body['view']['state']['values']['section']['section']['selected_option']['value'])
     category = body['view']['state']['values']['badge_type']['badge_type']['selected_option']['value']
-    generate_spreadsheet(section = section, badge_type = category)
+    user = body['user']['id']
     ack()
+    generate_spreadsheet(badge_type = category, section = section, user = user)
+    
