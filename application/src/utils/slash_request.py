@@ -1,7 +1,7 @@
 from config import *
 
 from utils import formOpen
-from osm_admin import OPS_REQUESTS
+from osm_admin import *
 from .slash_usage import slashUsage
 
 ###########################################################
@@ -13,29 +13,19 @@ from .slash_usage import slashUsage
 ###########################################################
 @app.command("/osm")
 def handle_command(body, ack, respond, client, logger):
-### Handle the /request [Request Type] shortcut
-
+### Handle the /request [Request Type] shortcut    
     ## Find the Ops Request ID to use
     req_id = None
     for req in OPS_REQUESTS.keys():
-        if OPS_REQUESTS[req]["command"] == body["text"]:
+        if OPS_REQUESTS[req]["command"].startswith(body["text"]):
             req_id = req
-
+    
     if req_id == None:
         # No req_id was found
+        logger.info(body)
         ack(
             blocks=slashUsage(body["text"]),
         )
     else:
+        exec(f"{OPS_REQUESTS[req]['action']}(body={body})")
         ack()
-        ### Create the Modal (popup) view
-        res = formOpen(
-            req_title = OPS_REQUESTS[req_id]['title_popup'],
-            req_blocks = OPS_REQUESTS[req_id]['blocks'],
-            client = client, 
-            trigger_id = body["trigger_id"],
-            view_id = "home",
-            req_id = req_id,
-            callback_id = req_id
-        )
-        logging.warning(res)

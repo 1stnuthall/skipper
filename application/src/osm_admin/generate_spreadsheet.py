@@ -73,6 +73,7 @@ req_badge_spreadsheet = dict(
     title_popup = "Generate Spreadsheet",
     title_home = "Generate Badge Spreadsheet",
     action_id = "req_badge_spreadsheet",
+    action = "generate_spreadsheet",
     command = "badge status",
     approval_needed = "false",
     enabled = "true",
@@ -88,7 +89,6 @@ OPS_REQUESTS.update(req_badge_spreadsheet=req_badge_spreadsheet)
 ## Display the popup form
 def display_request_form(ack, body, client, logger):
     ack()
-    logger.info("Entered Req")
     ### Create the Modal (popup) view
     formOpen(
         req_title = req_badge_spreadsheet['title_popup'],

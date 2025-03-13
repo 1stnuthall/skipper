@@ -3,7 +3,7 @@ from .tally_challenge_badge_completion import *
 from .update_required_chief_scout_badge_count import *
 from .generate_spreadsheet import *
 from .list_scouts import *
-from .show_points import *
+#from .show_points import *
 from .login import headers
 from .osm import OSM
 from .config import *

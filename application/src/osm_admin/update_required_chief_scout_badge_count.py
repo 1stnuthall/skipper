@@ -25,8 +25,15 @@ from slack_bolt import App, Say, Fail, Complete
 
 from .osm import OSM
 
-def update_required_chief_scout_badge_count(section, user):
-    Section = OSM(section)
+def update_required_chief_scout_badge_count(body):
+    user = body["user_id"]
+    if body["channel_name"] == "development":
+        print("setting to beavers")
+        section_name = "beavers"
+    else:
+        print(f"section {body['channel_name']}")
+        section_name = body["channel_name"]
+    Section = OSM(section_name)
     logging.info(f"csb={Section.chief_scout_badge}")
     logging.info(f"name={Section.name}")
     logging.info(f"id={Section.id}")
@@ -144,6 +151,7 @@ req_update_chief_scout = dict(
     title_home = "Tally Chief Scout",
     action_id = "req_update_chief_scout",
     command = "tally chief scout",
+    action = "update_required_chief_scout_badge_count",
     approval_needed = "false",
     enabled = "true",
     blocks = [

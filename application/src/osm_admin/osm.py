@@ -22,22 +22,22 @@ class OSM:
         self.group = section_group
         self.current_term = self.get_current_term()
         
-        # # Get Scout Details
-        self.scouts = dict()
-        self.size = 0
-        for scout in self.get_scouts():
-            if int(scout['age'].split(' ')[0]) < 14:
-                self.size += 1
-                self.scouts.update({str(scout['scoutid']): {
-                    "firstname": scout['firstname'],
-                    "lastname": scout['lastname'],
-                    "photo_guid": scout['photo_guid'],
-                    "patrolid": scout['patrolid'],
-                    "patrol": scout['patrol'],
-                    "patrol_role_level_label": scout['patrol_role_level_label'],
-                    "active": scout['active'],
-                    "full_name": scout['full_name']
-                }})
+        # # # Get Scout Details
+        # self.scouts = dict()
+        # self.size = 0
+        # for scout in self.get_scouts():
+        #     if int(scout['age'].split(' ')[0]) < 14:
+        #         self.size += 1
+        #         self.scouts.update({str(scout['scoutid']): {
+        #             "firstname": scout['firstname'],
+        #             "lastname": scout['lastname'],
+        #             "photo_guid": scout['photo_guid'],
+        #             "patrolid": scout['patrolid'],
+        #             "patrol": scout['patrol'],
+        #             "patrol_role_level_label": scout['patrol_role_level_label'],
+        #             "active": scout['active'],
+        #             "full_name": scout['full_name']
+        #         }})
 
         # self.patrols = dict()
         # for patrol in self.get_patrols():
@@ -127,15 +127,53 @@ class OSM:
             return response
         else:
             return cache
-        
-    def get_scouts(self):
-        url = f'{OSM_BASE_URL}/ext/members/contact/?action=getListOfMembers&sort=lastname&sectionid={self.id}&termid={self.current_term}&section={self.name}'
-        return self.get(url = url, scope = 'member', cachefile = f'{self.id}_members')['items']
 
-    def get_patrols(self):
-        url = f'{OSM_BASE_URL}/ext/members/patrols?action=getPatrolsWithPeople&sectionid={self.id}&termid={self.current_term}&include_no_patrol=y'
-        patrols = self.get(url = url, scope = 'member', cachefile = f'{self.id}_patrols')['items']
-        return self.get(url = url, scope = 'member', cachefile = f'{self.id}_patrols')['items']
+    def scouts(self):
+        url = f'{OSM_BASE_URL}/ext/members/contact/?action=getListOfMembers&sort=lastname&sectionid={self.id}&termid={self.current_term}&section={self.name}'
+        data = self.get(url = url, scope = 'member', cachefile = f'{self.id}_scouts')['items']
+
+        scouts = list()
+        size = 0
+        for scout in data:
+            if int(scout['age'].split(' ')[0]) < 14:
+                size += 1
+                scouts.append({
+                    "scoutid": str(scout['scoutid']),
+                    "firstname": scout['firstname'],
+                    "lastname": scout['lastname'],
+                    "photo_guid": scout['photo_guid'],
+                    "patrolid": scout['patrolid'],
+                    "patrol": scout['patrol'],
+                    "patrol_role_level_label": scout['patrol_role_level_label'],
+                    "active": scout['active'],
+                    "full_name": scout['full_name']
+                })
+                
+        return(dict({
+            "count": size,
+            "scouts": scouts
+        }))
+    
+    def patrols(self, include_no_patrol = "n"):
+        url = f'{OSM_BASE_URL}/ext/members/patrols?action=getPatrolsWithPeople&sectionid={self.id}&termid={self.current_term}&include_no_patrol={include_no_patrol}'
+        data = self.get(url = url, scope = 'member', cachefile = f'{self.id}_patrols')['items']
+
+        patrols = list()
+        size = 0
+        for patrol in data:
+            if patrol['active'] == "1" and not patrol['name'].contains("Leader", "New") :
+                size += 1
+                patrols.append({
+                    "patrolid": patrol['patrolid'],
+                    "name": patrol['name'],
+                    "points": patrol['lastname'],
+                    "members": patrol['members']
+                })
+                
+        return(dict({
+            "count": size,
+            "patrols": patrols
+        }))
     
     def get_terms(self):
         url = f'{OSM_BASE_URL}/api.php?action=getTerms&section_id={self.id}&section={self.name}'
@@ -173,6 +211,41 @@ class OSM:
         }
         return self.post(url = url, scope = 'flexi', data = data)['id']
 
+    def badges(self):
+        badges = list()
+        chief_scout_badge = ""
+        for badge_type in range(1,4):
+            badges.update({BADGE_TYPE[badge_type]: {}})
+
+        badge_details = self.get_badge_structure_by_type(badge_type)['details']
+        for badge_id, badge_detail in badge_details.items():
+            # Separate Chief Scout Badge
+            if re.search('chief', badge_detail['name'], re.IGNORECASE):
+                chief_scout_badge = dict({
+                    "identifier": badge_detail['badge_identifier'],
+                    "name": badge_detail['name'],
+                    "version": badge_detail['badge_version'],
+                    "id": badge_id,
+                    "picture": badge_detail['picture'],
+                    "description": badge_detail['description']
+                })
+
+            else:
+                badges[BADGE_TYPE[badge_type]].append({
+                    "identifier": badge_detail['badge_identifier'],
+                    "name": badge_detail['name'],
+                    "version": badge_detail['badge_version'],
+                    "id": badge_id,
+                    "picture": badge_detail['picture'],
+                    "description": badge_detail['description']
+                })
+        return dict({
+            "chief_scout_badge": chief_scout_badge,
+            "challenge": badges[1],
+            "activity": badges[2],
+            "staged": badges[3]
+        })
+                    
     def get_badges_flexi(self, flexi_record_name):
         url = f'{OSM_BASE_URL}/ext/members/flexirecords/?action=getFlexiRecords&sectionid={self.id}&archived=n'
         flexi_records = self.get(url = url, scope = 'flexi', cachefile = f'{self.id}_{flexi_record_name}')
@@ -250,13 +323,27 @@ class OSM:
     def get_badge_records_by_member(self):
         url = f'{OSM_BASE_URL}/ext/badges/badgesbyperson/?action=loadBadgesByMember&section={self.name}&sectionid={self.id}&term_id={self.current_term}'
         return self.get(url = url, scope = 'badge', cachefile = f'{self.id}_badge_completion')
-
-    def get_badge_record(self, badge_id, badge_version):
-        url = f'{OSM_BASE_URL}/ext/badges/records/?action=getBadgeRecords&term_id={self.current_term}&section={self.name}&badge_id={badge_id}&section_id={self.id}&badge_version={badge_version}'
-        return self.get(url = url, scope = 'badge', cachefile = f'{self.id}_{badge_id}')
     
-    def get_badge_record_by_identifier(self, badge_id, badge_version, badge_name):
-        url = f'{OSM_BASE_URL}/ext/badges/records/?action=getBadgeRecords&term_id={self.current_term}&section={self.name}&badge_id={badge_id}&section_id={self.id}&badge_version={badge_version}'
+    def split_badge_identifier(badge_identifier = None, badge_id = None, badge_version = None):
+        if badge_identifier != None:
+            badge_id = badge_identifier.split('_')[0]
+            badge_version = badge_identifier.split('_')[1]
+
+        return dict({
+            "id": badge_id,
+            "version": badge_version
+        })
+
+    def get_badge_record(self, badge_name, badge_identifier = None, badge_id = None, badge_version = None):
+        badge = self.split_badge_identifier(badge_identifier, badge_id, badge_version)
+
+        url = f'{OSM_BASE_URL}/ext/badges/records/?action=getBadgeRecords&term_id={self.current_term}&section={self.name}&badge_id={badge["id"]}&section_id={self.id}&badge_version={badge["version"]}'
+        return self.get(url = url, scope = 'badge', cachefile = f'{self.id}_{badge["id"]}_{badge_name}')
+    
+    def get_badge_record_by_identifier(self, badge_name, badge_identifier = None, badge_id = None, badge_version = None):
+        badge = self.split_badge_identifier(badge_identifier, badge_id, badge_version)
+
+        url = f'{OSM_BASE_URL}/ext/badges/records/?action=getBadgeRecords&term_id={self.current_term}&section={self.name}&badge_id={badge["id"]}&section_id={self.id}&badge_version={badge["version"]}'
         return self.get(url = url, scope = 'badge', cachefile = f'{self.id}_{badge_name}')
 
     def get_user_roles(self):

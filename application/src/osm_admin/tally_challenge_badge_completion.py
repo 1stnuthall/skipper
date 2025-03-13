@@ -28,8 +28,15 @@ from slack_bolt import App, Say, Fail, Complete
 
 from .osm import OSM
 
-def tally_challenge_badge_completion(section, user):
-    Section = OSM(section)
+def tally_challenge_badge_completion(body):
+    user = body["user_id"]
+    if body["channel_name"] == "development":
+        print("setting to beavers")
+        section_name = "beavers"
+    else:
+        print(f"section {body['channel_name']}")
+        section_name = body["channel_name"]
+    Section = OSM(section_name)
     flexi_record_name = 'Challenge Badge Completion'
     flexi_records = Section.get_all_flexi_records()
     flexi_record_id = ''
@@ -103,6 +110,7 @@ req_update_challenge_badges = dict(
     title_home = "Update Challenge Badges",
     action_id = "req_update_challenge_badges",
     command = "tally challenge badges",
+    action = "tally_challenge_badge_completion",
     approval_needed = "false",
     enabled = "true",
     blocks = [
