@@ -19,22 +19,10 @@ BLK_SECTION = InputBlock(
     )
 )
 
-BLK_PROJECT_SHORT_NAME = InputBlock(
-    block_id = "project_short_name",
-    label = TextObject(type="plain_text", text="Project Short Name"),
-    element = PlainTextInputElement(action_id="project_short_name", placeholder="acmelookup", max_length=14)
-)
-
-BLK_PROJECT_OWNER = InputBlock(
-    block_id = "product_owner",
-    label = TextObject(type="plain_text", text="Product Owner"),
-    element = PlainTextInputElement(action_id="product_owner", placeholder="Gwen Stacy")
-)
-
-BLK_PROJECT_TEAM = InputBlock(
-    block_id = "team_name",
-    label = TextObject(type="plain_text", text="Team Name"),
-    element = PlainTextInputElement(action_id="team_name", placeholder="Infrastructure")
+BLK_MESSAGE = InputBlock(
+  block_id = "message",
+  label = TextObject(type="plain_text", text="Message"),
+  element = PlainTextInputElement(action_id="message", placeholder="Enter a message to send to all section members")
 )
 
 BLK_COST_CODE = InputBlock(

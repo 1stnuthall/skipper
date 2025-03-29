@@ -97,3 +97,5 @@ if os.environ.get("CONTAINER_APP_NAME"):
     match = re.match(container_regex, os.environ.get("CONTAINER_APP_NAME"))
     if match.group(1) == "prod":
         ENVIRONMENT = "Production"
+
+

@@ -8,21 +8,25 @@ oauth2client = OAuth2Client(
 )
 
 headers = {
-    "badge": {
-        "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:badge:write")
-    },
-    "event": {
-        "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:event:write")
-    },
-    "flexi": {
-        "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:flexirecord:write")
-    },
-    "member": {
-        "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:member:write")
-    },
-    "programme": {
-        "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:programme:write")
-    }
+    "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:member:write section:programme:write section:flexirecord:write section:event:write section:badge:write section:attendance:write")
+    # "badge": {
+    #     "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:badge:write")
+    # },
+    # "event": {
+    #     "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:event:write")
+    # },
+    # "flexi": {
+    #     "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:flexirecord:write")
+    # },
+    # "member": {
+    #     "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:member:write")
+    # },
+    # "attendance": {
+    #     "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:attendance:write")
+    # },
+    # "programme": {
+    #     "Authorization": 'Bearer %s' % oauth2client.client_credentials(scope="section:programme:write")
+    # }
 }
 
 print("Authentication Headers Refreshed")

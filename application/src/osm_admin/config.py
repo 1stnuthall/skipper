@@ -38,3 +38,9 @@ XL_SLANTED = Alignment(text_rotation=45)
 # Create Ops Requests object
 ###################################################################
 OPS_REQUESTS = dict()
+
+# Twilio for SMS Messages
+TWILIO_API_KEY = os.environ.get("TWILIO_API_KEY")
+TWILIO_API_SECRET = os.environ.get("TWILIO_API_SECRET")
+TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+TWILIO_MESSAGE_SERVICE = os.environ.get("TWILIO_MESSAGE_SERVICE")

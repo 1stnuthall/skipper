@@ -1,0 +1,178 @@
+{
+	"type": "modal",
+	"title": {
+		"type": "plain_text",
+		"text": "Create new event",
+		"emoji": true
+	},
+	"submit": {
+		"type": "plain_text",
+		"text": "Submit",
+		"emoji": true
+	},
+	"close": {
+		"type": "plain_text",
+		"text": "Cancel",
+		"emoji": true
+	},
+	"blocks": [
+		{
+			"type": "input",
+			"element": {
+				"type": "plain_text_input",
+				"action_id": "event_name",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Visit to Scout HQ",
+					"emoji": true
+				}
+			},
+			"label": {
+				"type": "plain_text",
+				"text": "Event Name",
+				"emoji": true
+			}
+		},
+		{
+			"type": "input",
+			"element": {
+				"type": "static_select",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select an item",
+					"emoji": true
+				},
+				"options": [
+					{
+						"text": {
+							"type": "plain_text",
+							"text": "Indoor Residential (Scout Hut)",
+							"emoji": true
+						},
+						"value": "residential_hut"
+					},
+					{
+						"text": {
+							"type": "plain_text",
+							"text": "Indoor Residential (Other)",
+							"emoji": true
+						},
+						"value": "residential_other"
+					},
+					{
+						"text": {
+							"type": "plain_text",
+							"text": "Outdoor Camp (Scout Hut)",
+							"emoji": true
+						},
+						"value": "camp_hut"
+					},
+					{
+						"text": {
+							"type": "plain_text",
+							"text": "Outdoor Camp (Other)",
+							"emoji": true
+						},
+						"value": "camp_other"
+					},
+					{
+						"text": {
+							"type": "plain_text",
+							"text": "Activity at Hut",
+							"emoji": true
+						},
+						"value": "activity_hut"
+					},
+					{
+						"text": {
+							"type": "plain_text",
+							"text": "Activity at Other Location",
+							"emoji": true
+						},
+						"value": "activity_other"
+					}
+				],
+				"action_id": "static_select-action"
+			},
+			"label": {
+				"type": "plain_text",
+				"text": "Type",
+				"emoji": true
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Start Date*"
+			},
+			"accessory": {
+				"type": "datepicker",
+				"initial_date": "2025-03-01",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select a date",
+					"emoji": true
+				},
+				"action_id": "start_date"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Start Time*"
+			},
+			"accessory": {
+				"type": "timepicker",
+				"initial_time": "10:00",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select time",
+					"emoji": true
+				},
+				"action_id": "start_time"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*End Date*"
+			},
+			"accessory": {
+				"type": "datepicker",
+				"initial_date": "2025-03-01",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select a date",
+					"emoji": true
+				},
+				"action_id": "end_date"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*End Time*"
+			},
+			"accessory": {
+				"type": "timepicker",
+				"initial_time": "11:00",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select time",
+					"emoji": true
+				},
+				"action_id": "end_time"
+			}
+		}
+	]
+}
