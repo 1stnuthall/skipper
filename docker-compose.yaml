@@ -14,6 +14,7 @@ services:
           address = "0.0.0.0:8200"
           tls_cert_file = "/vault/vault.crt"
           tls_key_file = "/vault/vault.key"
+          tls_disable_client_certs = "true"
         }
         storage "mysql" {
           address = "mariadb:3306"
