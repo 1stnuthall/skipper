@@ -19,6 +19,7 @@ services:
           password = "vaultpass"
           database = "vaultdb"
           table = "vault_kv_store"
+          plaintext_connection_allowed = true
         }
         disable_mlock = true
     volumes:
