@@ -22,6 +22,7 @@ services:
         disable_mlock = true
     volumes:
       - ./vault:/vault
+    command: server
     cap_add:
       - IPC_LOCK
     depends_on:
