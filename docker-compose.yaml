@@ -96,9 +96,9 @@ services:
     container_name: cloudflared-tunnel
     image: cloudflare/cloudflared
     restart: unless-stopped
-    command: tunnel --no-autoupdate run
+    command: tunnel run
     environment:
-      - TUNNEL_TOKEN=eyJhIjoiNWFmOWE1NTRjZWY5NDljYzRiNGRlZDU5MWI1NGVlY2EiLCJ0IjoiOWFmODdjODUtZGFlNy00NWNlLTkxMmItNWRjZTYwMTc5MWUyIiwicyI6Ik1UUTBPVE5pWTJVdFpUZ3lNQzAwTXpRMkxUbGxaVGt0Wm1NNE5HRXdNekUxWXpFdyJ9
+      - TUNNEL_TOKEN=eyJhIjoiNWFmOWE1NTRjZWY5NDljYzRiNGRlZDU5MWI1NGVlY2EiLCJ0IjoiMDRiNzllYmEtNjQ1Yy00NDhiLTlhOGYtOWU1ZDBmN2FkZTU0IiwicyI6Ik5EQTVOR1UxWWpRdFpXTmlaQzAwTldFMExXSTJORGd0WmpSaE5XUmlZakF6TVdZNCJ9
     networks:
       - skipper
 
