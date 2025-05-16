@@ -1,0 +1,118 @@
+version: '3.9'
+
+services:
+  vault:
+    image: hashicorp/vault:1.15
+    container_name: vault
+    restart: unless-stopped
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_LOCAL_CONFIG: |
+        ui = true
+        listener "tcp" {
+          address = "0.0.0.0:8200"
+          tls_disable = 1
+        }
+        storage "mysql" {
+          address = "mariadb:3306"
+          username = "vault"
+          password = "vaultpass"
+          database = "vaultdb"
+          table = "vault_kv_store"
+        }
+        disable_mlock = true
+    volumes:
+      - type: volume
+        source: skipper
+        target: /vault
+        volume:
+          subpath: vault
+    cap_add:
+      - IPC_LOCK
+    depends_on:
+      - mariadb
+    networks:
+      - skipper
+
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: vaultdb
+      MYSQL_USER: vault
+      MYSQL_PASSWORD: vaultpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - type: volume
+        source: skipper
+        target: /var/lib/mysql
+        volume:
+          subpath: mysql
+    networks:
+      - skipper
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - type: volume
+        source: skipper
+        target: /data
+        volume:
+          subpath: redis
+    networks:
+      - skipper
+
+  app:
+    build:
+      context: ./src
+      dockerfile: dockerfile
+    container_name: skipper
+    environment:
+      VAULT_ADDR: http://vault:8200
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "3000:3000"
+    depends_on:
+      - vault
+      - redis
+      - tunnel
+    volumes:
+      - type: volume
+        source: skipper
+        target: /app
+        volume:
+          subpath: skipper
+    networks:
+      - skipper
+
+  tunnel:
+    container_name: cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    mem_limit: 96m
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiNWFmOWE1NTRjZWY5NDljYzRiNGRlZDU5MWI1NGVlY2EiLCJ0IjoiOWFmODdjODUtZGFlNy00NWNlLTkxMmItNWRjZTYwMTc5MWUyIiwicyI6Ik1UUTBPVE5pWTJVdFpUZ3lNQzAwTXpRMkxUbGxaVGt0Wm1NNE5HRXdNekUxWXpFdyJ9
+    networks:
+      - skipper
+
+volumes:
+  skipper:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/var/skipper'
+
+networks:
+  skipper:
+    driver: bridge

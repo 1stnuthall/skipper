@@ -6,4 +6,4 @@ python-dotenv
 tabulate
 openpyxl
 requests_oauth2client
-requests
+cryptography
