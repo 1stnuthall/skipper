@@ -38,7 +38,7 @@ services:
     container_name: mariadb
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_RANDOM_ROOT_PASSWORD: true
       MYSQL_DATABASE: vaultdb
       MYSQL_USER: vault
       MYSQL_PASSWORD: vaultpass
