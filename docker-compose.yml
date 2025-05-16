@@ -59,7 +59,7 @@ services:
       - MYSQL_PASSWORD=root
 
   skipper:
-    image: skipper
+    build: .
     container_name: skipper
     ports:
       - "3000:3000"
