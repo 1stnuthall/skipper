@@ -1,0 +1,86 @@
+services:
+  # vault:
+  #   image: hashicorp/vault
+  #   container_name: vault
+  #   ports:
+  #     - "8200:8200"
+  #     - "8201:8201"
+  #   restart: unless-stopped
+  #   volumes:
+  #     - type: volume
+  #       source: skipper
+  #       target: /vault
+  #       volume:
+  #         subpath: vault
+  #   mem_limit: 96m
+  #   networks:
+  #     - skipper
+  #   cap_add:
+  #     - IPC_LOCK
+
+  # redis:
+  #   image: redis
+  #   container_name: redis
+  #   ports:
+  #     - "6380:6379"
+  #   restart: unless-stopped
+  #   mem_limit: 96m
+  #   command: /bin/bash -c 'redis-server --appendonly yes'
+  #   sysctls:
+  #     - net.core.somaxconn=65535
+  #   volumes:
+  #     - type: volume
+  #       source: skipper
+  #       target: /data
+  #       volume:
+  #         subpath: redis
+  #   networks:
+  #     - skipper
+
+  # db:
+  #   image: mariadb
+  #   container_name: db
+  #   ports:
+  #     - "3307:3306"
+  #   restart: unless-stopped
+  #   volumes:
+  #     - type: volume
+  #       source: skipper
+  #       target: /var/lib/mysql
+  #       volume:
+  #         subpath: mysql
+  #   mem_limit: 512m
+  #   networks:
+  #     - skipper
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=root
+  #     - MYSQL_DATABASE=local
+  #     - MYSQL_USER=root
+  #     - MYSQL_PASSWORD=root
+
+  skipper:
+    image: skipper
+    container_name: skipper
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - skipper
+
+  tunnel:
+    container_name: cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    mem_limit: 96m
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiNWFmOWE1NTRjZWY5NDljYzRiNGRlZDU5MWI1NGVlY2EiLCJ0IjoiOWFmODdjODUtZGFlNy00NWNlLTkxMmItNWRjZTYwMTc5MWUyIiwicyI6Ik1UUTBPVE5pWTJVdFpUZ3lNQzAwTXpRMkxUbGxaVGt0Wm1NNE5HRXdNekUxWXpFdyJ9
+    networks:
+      - skipper
+
+volumes:
+  skipper:
+
+networks:
+  skipper:
+    driver: bridge
