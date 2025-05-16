@@ -34,7 +34,7 @@ services:
       - skipper
 
   mariadb:
-    image: mariadb:11
+    image: mariadb
     container_name: mariadb
     restart: unless-stopped
     environment:
