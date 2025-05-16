@@ -96,8 +96,7 @@ services:
     container_name: cloudflared-tunnel
     image: cloudflare/cloudflared
     restart: unless-stopped
-    command: tunnel run
-    mem_limit: 128m
+    command: tunnel --no-autoupdate run
     environment:
       - TUNNEL_TOKEN=eyJhIjoiNWFmOWE1NTRjZWY5NDljYzRiNGRlZDU5MWI1NGVlY2EiLCJ0IjoiOWFmODdjODUtZGFlNy00NWNlLTkxMmItNWRjZTYwMTc5MWUyIiwicyI6Ik1UUTBPVE5pWTJVdFpUZ3lNQzAwTXpRMkxUbGxaVGt0Wm1NNE5HRXdNekUxWXpFdyJ9
     networks:
