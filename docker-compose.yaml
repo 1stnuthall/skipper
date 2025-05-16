@@ -21,11 +21,7 @@ services:
         }
         disable_mlock = true
     volumes:
-      - type: volume
-        source: skipper
-        target: /vault
-        volume:
-          subpath: vault
+      - ./vault:/vault
     cap_add:
       - IPC_LOCK
     depends_on:
@@ -45,11 +41,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - type: volume
-        source: skipper
-        target: /var/lib/mysql
-        volume:
-          subpath: mysql
+      - ./mysql:/var/lib/mysql
     networks:
       - skipper
 
@@ -60,11 +52,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - type: volume
-        source: skipper
-        target: /data
-        volume:
-          subpath: redis
+      - ./redis:/data
     networks:
       - skipper
 
@@ -84,11 +72,7 @@ services:
       - redis
       - tunnel
     volumes:
-      - type: volume
-        source: skipper
-        target: /app
-        volume:
-          subpath: skipper
+      - ./skipper:/app
     networks:
       - skipper
 
@@ -101,9 +85,6 @@ services:
       - TUNNEL_TOKEN=eyJhIjoiNWFmOWE1NTRjZWY5NDljYzRiNGRlZDU5MWI1NGVlY2EiLCJ0IjoiMDRiNzllYmEtNjQ1Yy00NDhiLTlhOGYtOWU1ZDBmN2FkZTU0IiwicyI6Ik5EQTVOR1UxWWpRdFpXTmlaQzAwTldFMExXSTJORGd0WmpSaE5XUmlZakF6TVdZNCJ9
     networks:
       - skipper
-
-volumes:
-  skipper:
 
 networks:
   skipper:
