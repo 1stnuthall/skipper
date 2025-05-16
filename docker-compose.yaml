@@ -104,11 +104,6 @@ services:
 
 volumes:
   skipper:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/var/skipper'
 
 networks:
   skipper:
